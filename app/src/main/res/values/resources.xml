@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Data for new card spinners -->
+    <string-array name="card_types">
+        <item>Credit Card</item>
+        <item>Debit Card</item>
+    </string-array>
+
+    <string-array name="card_currencies">
+        <item>MXN</item>
+        <item>USD</item>
+    </string-array>
+</resources>
