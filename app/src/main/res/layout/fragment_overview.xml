@@ -1,0 +1,50 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.jesusmacedo.balances.fragments.OverviewFragment">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_overview_card"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_card_view_current_balance"
+        card_view:cardUseCompatPadding="true"
+        card_view:cardElevation="@dimen/elevation_overview_card_view"
+        card_view:contentPadding="@dimen/padding_overview_card_view">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tv_overview_current_balance"
+                android:textColor="@color/colorAccent"/>
+
+            <TextView
+                android:id="@+id/tv_overview_current_balance"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/example_current_balance"
+                android:textSize="@dimen/size_overview_current_balance"
+                android:textColor="@color/colorSecondaryDark"
+                android:gravity="center"/>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_no_records"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_tv_no_cards"
+        android:layout_below="@+id/cv_overview_card"
+        android:text="@string/tv_no_records"
+        android:textSize="@dimen/size_notice"
+        android:textColor="@android:color/darker_gray"
+        android:gravity="center"
+        android:visibility="visible"/>
+
+</RelativeLayout>
