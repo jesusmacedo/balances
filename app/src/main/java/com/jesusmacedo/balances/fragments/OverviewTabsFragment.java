@@ -49,20 +49,15 @@ public class OverviewTabsFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_overview_tabs, container, false);
 
+        tvNoCards = (TextView) view.findViewById(R.id.tv_no_cards);
+
         cards = Card.getCards(view.getContext());
         pagerAdapter = new OverviewPagerAdapter(getActivity().getSupportFragmentManager(), cards);
 
         viewPager = (ViewPager) view.findViewById(R.id.vp_overview);
         viewPager.setAdapter(pagerAdapter);
 
-        if (cards.size() == 0) {
-            Log.e("DFA", "no cards?");
-            tvNoCards = (TextView) view.findViewById(R.id.tv_no_cards);
-            tvNoCards.setVisibility(View.VISIBLE);
-        } else {
-            Log.e("DFA", "CAAAAARDS");
-            viewPager.setVisibility(View.VISIBLE);
-        }
+        displayElements();
 
         // add viewPager to tabs
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tl_tabs);
@@ -75,12 +70,11 @@ public class OverviewTabsFragment extends Fragment {
      */
     private void displayElements() {
         if (cards.size() == 0) {
-            Log.e("DFA", "no cards?");
-            tvNoCards = (TextView) view.findViewById(R.id.tv_no_cards);
             tvNoCards.setVisibility(View.VISIBLE);
+            viewPager.setVisibility(View.GONE);
         } else {
-            Log.e("DFA", "CAAAAARDS");
             viewPager.setVisibility(View.VISIBLE);
+            tvNoCards.setVisibility(View.GONE);
         }
     }
 

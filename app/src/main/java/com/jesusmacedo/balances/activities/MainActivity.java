@@ -17,6 +17,7 @@ import android.view.MenuItem;
 
 import com.jesusmacedo.balances.R;
 import com.jesusmacedo.balances.fragments.NewCardDialogFragment;
+import com.jesusmacedo.balances.fragments.NewRecordDialogFragment;
 import com.jesusmacedo.balances.fragments.OverviewTabsFragment;
 import com.jesusmacedo.balances.models.Card;
 
@@ -50,8 +51,9 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                NewRecordDialogFragment dialog = new NewRecordDialogFragment();
+                dialog.setStyle( DialogFragment.STYLE_NORMAL, R.style.AppTheme );
+                dialog.show(getSupportFragmentManager(),NewRecordDialogFragment.TAG);
             }
         });
 
