@@ -104,38 +104,6 @@ public class NewCardDialogFragment extends DialogFragment implements AdapterView
         setStyle(DialogFragment.STYLE_NO_FRAME, 0);
     }
 
-    /*
-     * Add menu.
-     * @param menu
-     * @return
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-
-        getMenuInflater().inflate(R.menu.activity_new_card, menu);
-        return true;
-    }
-
-    /**
-     * Handle item selection for menu.
-     * @param item
-     * @return
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        super.onOptionsItemSelected(item);
-
-        int id = item.getItemId();
-
-        switch (id) {
-            case R.id.action_save_card:
-                saveCard();
-                break;
-        }
-        return true;
-    }*/
-
     /**
      * For spinners, assign the selected (or default) value.
      * @param parent

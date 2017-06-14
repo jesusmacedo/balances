@@ -13,4 +13,5 @@
     <dimen name="elevation_overview_card_view">3dp</dimen>
     <dimen name="padding_overview_card_view">5dp</dimen>
     <dimen name="size_overview_current_balance">30sp</dimen>
+    <dimen name="size_new_record_sign">40sp</dimen>
 </resources>

@@ -102,6 +102,15 @@ public class Card implements Serializable {
         return cards;
     }
 
+    /**
+     * To automatically use the card name as text in the spinners.
+     * @return
+     */
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public long getCardId() {
         return cardId;
     }

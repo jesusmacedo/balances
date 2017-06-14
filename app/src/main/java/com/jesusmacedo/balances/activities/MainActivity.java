@@ -41,11 +41,8 @@ public class MainActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             // set first fragment
             setTitle("Overview");
-            currentFragment = new OverviewTabsFragment();
-            //changeFragment(currentFragment);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_content, new OverviewTabsFragment(), OverviewTabsFragment.TAG).commit();
         }
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_content, new OverviewTabsFragment(), OverviewTabsFragment.TAG).commit();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
