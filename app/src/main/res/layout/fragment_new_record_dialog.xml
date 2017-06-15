@@ -191,7 +191,7 @@
     </android.support.v7.widget.CardView>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_new_record"
+        android:id="@+id/fab_save_new_record"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

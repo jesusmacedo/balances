@@ -1,16 +1,11 @@
 package com.jesusmacedo.balances.fragments;
 
 import android.content.Context;
-import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -22,12 +17,14 @@ import android.widget.Toast;
 
 import com.jesusmacedo.balances.R;
 import com.jesusmacedo.balances.models.Card;
+import com.jesusmacedo.balances.models.Currency;
 
 /**
  * For adding a new card.
  */
 public class NewCardDialogFragment extends DialogFragment implements AdapterView.OnItemSelectedListener {
 
+    public static String TAG = "HOLA";
     private EditText etNewCardName;
     private EditText etNewCurrentBalance;
     private Spinner sNewCardCurrency;
@@ -37,15 +34,13 @@ public class NewCardDialogFragment extends DialogFragment implements AdapterView
     private EditText etNewDueDate;
     private EditText etNewDueDateReminder;
     private Callback callback;
-
     private Card card;
     private String currency;
     private String type;
 
-    public static String TAG = "HOLA";
-
     /**
      * Connect the implementation of the callback defined here but being called from the main activity.
+     *
      * @param context
      */
     @Override
@@ -66,7 +61,7 @@ public class NewCardDialogFragment extends DialogFragment implements AdapterView
         etNewCurrentBalance = (EditText) view.findViewById(R.id.et_new_current_balance);
 
         sNewCardCurrency = (Spinner) view.findViewById(R.id.s_new_card_currency);
-        ArrayAdapter<CharSequence> cardCurrenciesAdapter = ArrayAdapter.createFromResource(getContext(), R.array.card_currencies, android.R.layout.simple_spinner_item);
+        ArrayAdapter<Currency> cardCurrenciesAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, Currency.getCurrencies(view.getContext()));
         cardCurrenciesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sNewCardCurrency.setAdapter(cardCurrenciesAdapter);
         sNewCardCurrency.setOnItemSelectedListener(this);
@@ -101,11 +96,13 @@ public class NewCardDialogFragment extends DialogFragment implements AdapterView
         Window window = getDialog().getWindow();
         window.setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
         window.setGravity(Gravity.CENTER);
+        window.setWindowAnimations(android.R.style.Animation_Dialog);
         setStyle(DialogFragment.STYLE_NO_FRAME, 0);
     }
 
     /**
      * For spinners, assign the selected (or default) value.
+     *
      * @param parent
      * @param view
      * @param position
@@ -123,6 +120,7 @@ public class NewCardDialogFragment extends DialogFragment implements AdapterView
 
     /**
      * For spinners.
+     *
      * @param parent
      */
     @Override

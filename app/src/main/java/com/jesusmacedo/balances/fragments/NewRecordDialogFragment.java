@@ -3,8 +3,11 @@ package com.jesusmacedo.balances.fragments;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +23,8 @@ import android.widget.TimePicker;
 
 import com.jesusmacedo.balances.R;
 import com.jesusmacedo.balances.models.Card;
+import com.jesusmacedo.balances.models.Category;
+import com.jesusmacedo.balances.models.Currency;
 
 import java.util.Calendar;
 
@@ -31,7 +36,9 @@ import co.ceryle.segmentedbutton.SegmentedButtonGroup;
 public class NewRecordDialogFragment extends DialogFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, SegmentedButtonGroup.OnClickedButtonPosition {
 
     public static final String TAG = "NEW_RECORD";
+    private static final String ARG_CARD_PARAM = "paramCard";
     private View view;
+    private Card card;
 
     private SegmentedButtonGroup sbg;
     private ImageButton ibNewRecordDate, ibNewRecordTime;
@@ -42,6 +49,34 @@ public class NewRecordDialogFragment extends DialogFragment implements View.OnCl
 
     public NewRecordDialogFragment() {
         // Required empty public constructor
+    }
+
+    /**
+     * For receiving data when creating the dialog fragment.
+     *
+     * @param card
+     * @return
+     */
+    public static NewRecordDialogFragment newInstance(Card card) {
+
+        Bundle args = new Bundle();
+        // get args
+        args.putSerializable(ARG_CARD_PARAM, card);
+
+        NewRecordDialogFragment fragment = new NewRecordDialogFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // if something was received, get card
+        if (getArguments() != null) {
+            card = (Card) getArguments().getSerializable(ARG_CARD_PARAM);
+            Log.e("DFA", ""+ card.getCardId());
+        }
     }
 
     @Override
@@ -62,24 +97,34 @@ public class NewRecordDialogFragment extends DialogFragment implements View.OnCl
         ArrayAdapter<Card> cardsAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, Card.getCards(view.getContext()));
         cardsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sNewRecordCard.setAdapter(cardsAdapter);
+        // select current card
+        sNewRecordCard.setSelection((int) (long)(card.getCardId() - 1));
         sNewRecordCard.setOnItemSelectedListener(this);
 
         sNewRecordCategory = (Spinner) view.findViewById(R.id.s_new_record_category);
-        ArrayAdapter<CharSequence> categoriesAdapter = ArrayAdapter.createFromResource(getContext(), R.array.card_currencies, android.R.layout.simple_spinner_item);
+        ArrayAdapter<Category> categoriesAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, Category.getCategories(view.getContext()));
         categoriesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sNewRecordCategory.setAdapter(categoriesAdapter);
         sNewRecordCategory.setOnItemSelectedListener(this);
 
         sNewRecordCurrency = (Spinner) view.findViewById(R.id.s_new_record_currency);
-        ArrayAdapter<CharSequence> cardCurrenciesAdapter = ArrayAdapter.createFromResource(getContext(), R.array.card_currencies, android.R.layout.simple_spinner_item);
-        cardCurrenciesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sNewRecordCurrency.setAdapter(cardCurrenciesAdapter);
+        ArrayAdapter<Currency> currenciesAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, Currency.getCurrencies(view.getContext()));
+        currenciesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sNewRecordCurrency.setAdapter(currenciesAdapter);
         sNewRecordCurrency.setOnItemSelectedListener(this);
 
         // add click listeners to image buttons
         ibNewRecordDate.setOnClickListener(this);
         ibNewRecordTime.setOnClickListener(this);
         sbg.setOnClickedButtonPosition(this);
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_save_new_record);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //saveCard();
+            }
+        });
 
         return view;
     }
@@ -92,16 +137,18 @@ public class NewRecordDialogFragment extends DialogFragment implements View.OnCl
         Window window = getDialog().getWindow();
         window.setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
         window.setGravity(Gravity.CENTER);
+        window.setWindowAnimations(android.R.style.Animation_Dialog);
         setStyle(DialogFragment.STYLE_NO_FRAME, 0);
     }
 
     /**
      * Click listener for ImageButtons
+     *
      * @param v
      */
     @Override
     public void onClick(View v) {
-        final Calendar c  = Calendar.getInstance();
+        final Calendar c = Calendar.getInstance();
 
         if (v == ibNewRecordDate) {
             int day = c.get(Calendar.DAY_OF_MONTH);
@@ -120,7 +167,7 @@ public class NewRecordDialogFragment extends DialogFragment implements View.OnCl
             int hours = c.get(Calendar.HOUR_OF_DAY);
             int minutes = c.get(Calendar.MINUTE);
 
-            TimePickerDialog timePickerDialog =  new TimePickerDialog(v.getContext(), new TimePickerDialog.OnTimeSetListener() {
+            TimePickerDialog timePickerDialog = new TimePickerDialog(v.getContext(), new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                     tvNewRecordTime.setText(hourOfDay + ":" + minute);
@@ -133,6 +180,7 @@ public class NewRecordDialogFragment extends DialogFragment implements View.OnCl
 
     /**
      * For spinners selection.
+     *
      * @param parent
      * @param view
      * @param position
@@ -153,6 +201,7 @@ public class NewRecordDialogFragment extends DialogFragment implements View.OnCl
 
     /**
      * SegmentedButtonGroup listener.
+     *
      * @param position
      */
     @Override
@@ -170,5 +219,10 @@ public class NewRecordDialogFragment extends DialogFragment implements View.OnCl
             default:
                 tvNewRecordSign.setText("-");
         }
+    }
+
+    public boolean validateForm() {
+        //if ()
+        return true;
     }
 }

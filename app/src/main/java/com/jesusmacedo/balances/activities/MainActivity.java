@@ -37,22 +37,13 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        setTitle(getString(R.string.action_overview));
+
         // if it is the first time creating this activity
         if (savedInstanceState == null) {
             // set first fragment
-            setTitle("Overview");
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_content, new OverviewTabsFragment(), OverviewTabsFragment.TAG).commit();
         }
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NewRecordDialogFragment dialog = new NewRecordDialogFragment();
-                dialog.setStyle( DialogFragment.STYLE_NORMAL, R.style.AppTheme );
-                dialog.show(getSupportFragmentManager(),NewRecordDialogFragment.TAG);
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -109,18 +100,21 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        switch (id) {
+            case R.id.nav_overview:
+                setTitle(getString(R.string.action_overview));
+                break;
+            case R.id.nav_all_records:
+                setTitle(getString(R.string.action_all_records));
+                break;
+            case R.id.nav_scheduled_payments:
+                setTitle(getString(R.string.action_scheduled_payments));
+                break;
+            case R.id.nav_categories:
+                setTitle(getString(R.string.action_categories));
+                break;
+            default:
+                setTitle(getString(R.string.action_overview));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

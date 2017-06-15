@@ -1,12 +1,11 @@
 package com.jesusmacedo.balances.fragments;
 
 
-import android.icu.text.DecimalFormat;
-import android.icu.text.NumberFormat;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,6 @@ import android.widget.TextView;
 
 import com.jesusmacedo.balances.R;
 import com.jesusmacedo.balances.models.Card;
-
-import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass for displaying the cards overview.
@@ -34,6 +31,7 @@ public class OverviewFragment extends Fragment {
 
     /**
      * For receiving data before creating the view.
+     *
      * @return
      */
     public static OverviewFragment newInstance(Card card) {
@@ -49,6 +47,7 @@ public class OverviewFragment extends Fragment {
 
     /**
      * For handling the received data.
+     *
      * @param savedInstanceState
      */
     @Override
@@ -71,7 +70,23 @@ public class OverviewFragment extends Fragment {
         tvCurrentBalance = (TextView) view.findViewById(R.id.tv_overview_current_balance);
 
         // set data
-        tvCurrentBalance.setText("$" +card.getCurrentBalance());
+        tvCurrentBalance.setText("$" + card.getCurrentBalance());
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_new_record);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NewRecordDialogFragment dialog = new NewRecordDialogFragment();
+                dialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme);
+
+                // pass data to the dialog fragment
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("paramCard", card);
+                dialog.setArguments(bundle);
+
+                dialog.show(getActivity().getSupportFragmentManager(), NewRecordDialogFragment.TAG);
+            }
+        });
         return view;
     }
 

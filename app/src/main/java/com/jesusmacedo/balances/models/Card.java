@@ -16,7 +16,7 @@ public class Card implements Serializable {
 
     public static final String TABLE_NAME = "Card";
     public static final String CARD_ID = "cardId";
-    public static final String CARD_NAME ="name";
+    public static final String CARD_NAME = "name";
     public static final String CURRENT_BALANCE = "current_balance";
     public static final String CURRENCY = "currency";
     public static final String TYPE = "type";
@@ -48,6 +48,7 @@ public class Card implements Serializable {
 
     /**
      * Store new card.
+     *
      * @param context
      * @param card
      * @return
@@ -64,14 +65,27 @@ public class Card implements Serializable {
         values.put("reminder_days", card.getReminderDays());
 
         long cardId = DatabaseAdapter.getDB(context).insert(TABLE_NAME, null, values);
-        Period period = new Period(Calendar.MONTH +1, Calendar.YEAR, card.getCurrentBalance(), cardId);
+
+        // create new period
+        Calendar c = Calendar.getInstance();
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        int month = c.get(Calendar.MONTH);
+        int year = c.get(Calendar.YEAR);
+
+        if (day >= card.getClosingDate()) {
+            month++;
+        }
+        Period period = new Period(month, year, card.getCurrentBalance(), cardId);
         Period.addNewPeriodToCard(context, period);
+
+        Period.getAllPeriods(context);
 
         return cardId;
     }
 
     /**
      * Get all cards stored.
+     *
      * @param context
      * @return
      */
@@ -96,7 +110,7 @@ public class Card implements Serializable {
                 card.setCardId(cardId);
                 cards.add(card);
             }
-            Log.e("DFA", "Size: " + cards.size());
+
             cursor.close();
         }
         return cards;
@@ -104,6 +118,7 @@ public class Card implements Serializable {
 
     /**
      * To automatically use the card name as text in the spinners.
+     *
      * @return
      */
     @Override

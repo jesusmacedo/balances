@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Balances</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Configuración</string>
+    <string name="action_save_card">Guardar tarjeta</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="tv_no_cards">No hay tarjetas registradas</string>
+    <string name="hint_new_card_name">Nombre de la tarjeta</string>
+    <string name="hint_new_current_balance">Balance actual</string>
+    <string name="hint_new_card_currency">Moneda</string>
+    <string name="hint_new_card_type">Tipo de tarjeta</string>
+    <string name="hint_new_credit_limit">Límite de crédito</string>
+    <string name="hint_new_closing_date">Día de corte</string>
+    <string name="hint_new_due_date">Fecha límite de pago</string>
+    <string name="hint_new_due_date_reminder">Número de días para el recordatorio</string>
+    <string name="tv_overview_current_balance">Balance actual</string>
+    <string name="example_current_balance">$1480.00</string>
+    <string name="tv_no_records">No hay registros</string>
+    <string name="label_new_record_sign">-</string>
+    <string name="hint_new_record_amount">Monto</string>
+    <string name="hint_new_record_note">Nota</string>
+    <string name="hint_new_record_date">Fecha &amp; hora</string>
+    <string name="hint_new_record_mif">Meses sin intereses</string>
+    <string name="hint_new_record_currency">Moneda</string>
+    <string name="label_new_record_date">00/00/0000</string>
+    <string name="label_new_record_time">00:00</string>
+    <string name="hint_new_record_card">Tarjeta</string>
+    <string name="hint_new_record_category">Categoria</string>
+    <string name="category_house">Casa</string>
+    <string name="category_car">Auto</string>
+    <string name="category_rent">Renta</string>
+    <string name="category_food">Comida</string>
+    <string name="category_extras">Extras</string>
+    <string name="action_overview">Resumen</string>
+    <string name="action_all_records">Todos los registros</string>
+    <string name="action_scheduled_payments">Pagos programados</string>
+    <string name="action_categories">Categorias</string>
+</resources>
