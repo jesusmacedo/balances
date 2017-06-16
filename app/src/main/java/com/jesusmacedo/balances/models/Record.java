@@ -38,7 +38,7 @@ public class Record {
     private long cardId;
     private long periodId;
 
-    public Record(int type, double amount, long category, String desc, Date date, int msi, long currency, int isPlaned, long cardId) {
+    public Record(int type, double amount, long category, String desc, Date date, int msi, long currency, int isPlaned, long cardId, long periodId) {
         this.type = type;
         this.amount = amount;
         this.category = category;
@@ -48,6 +48,7 @@ public class Record {
         this.currency = currency;
         this.isPlaned = isPlaned;
         this.cardId = cardId;
+        this.periodId = periodId;
     }
 
     public static long addNewRecord(Context context, Record record) {

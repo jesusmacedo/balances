@@ -52,7 +52,28 @@ public class Period {
         return DatabaseAdapter.getDB(context).insert(TABLE_NAME, null, values);
     }
 
-    //public static Period getPeriodByCardId(Context context, long cardId)
+    public static Period getPeriodByCardId(Context context, long cardId, int month, int year) {
+        Period period =  null;
+        String where = CARD_ID +"="+ cardId +" AND "+ MONTH +"="+ month +" AND "+ YEAR +"="+ year;
+
+        Cursor cursor = DatabaseAdapter.getDB(context).query(TABLE_NAME, null, where, null, null, null, null);
+
+        if (cursor != null) {
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                int periodId = cursor.getInt(cursor.getColumnIndexOrThrow(PERIOD_ID));
+                int monthResponse = cursor.getInt(cursor.getColumnIndexOrThrow(MONTH));
+                int yearResponse = cursor.getInt(cursor.getColumnIndexOrThrow(YEAR));
+                double balance = cursor.getDouble(cursor.getColumnIndexOrThrow(BALANCE));
+
+                period = new Period(monthResponse, yearResponse, balance, cardId);
+                period.setPeriodId(periodId);
+            }
+
+            cursor.close();
+        }
+        return period;
+
+    }
     //https://www.tutorialspoint.com/sqlite/sqlite_using_joins.htm
     //https://stackoverflow.com/questions/9902394/how-to-get-last-record-from-sqlite
 

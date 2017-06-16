@@ -16,6 +16,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,8 +26,11 @@ import com.jesusmacedo.balances.R;
 import com.jesusmacedo.balances.models.Card;
 import com.jesusmacedo.balances.models.Category;
 import com.jesusmacedo.balances.models.Currency;
+import com.jesusmacedo.balances.models.Period;
+import com.jesusmacedo.balances.models.Record;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import co.ceryle.segmentedbutton.SegmentedButtonGroup;
 
@@ -41,11 +45,16 @@ public class NewRecordDialogFragment extends DialogFragment implements View.OnCl
     private Card card;
 
     private SegmentedButtonGroup sbg;
+    private int recordType = 1;
     private ImageButton ibNewRecordDate, ibNewRecordTime;
     private TextView tvNewRecordSign, tvNewRecordDate, tvNewRecordTime;
     private Spinner sNewRecordCard, sNewRecordCategory, sNewRecordCurrency;
+    private EditText etNewRecordAmount, etNewRecordDesc, etNewRecordMIF;
 
-    private String currency;
+    private Currency currency;
+    private Category category;
+    private int finalMonth;
+    private int finalYear;
 
     public NewRecordDialogFragment() {
         // Required empty public constructor
@@ -87,10 +96,13 @@ public class NewRecordDialogFragment extends DialogFragment implements View.OnCl
 
         sbg = (SegmentedButtonGroup) view.findViewById(R.id.sbg_record_types);
         tvNewRecordSign = (TextView) view.findViewById(R.id.tv_new_record_sign);
+        etNewRecordAmount = (EditText) view.findViewById(R.id.et_new_record_amount);
         ibNewRecordDate = (ImageButton) view.findViewById(R.id.ib_new_record_date);
         tvNewRecordDate = (TextView) view.findViewById(R.id.tv_new_record_date);
         ibNewRecordTime = (ImageButton) view.findViewById(R.id.ib_new_record_time);
         tvNewRecordTime = (TextView) view.findViewById(R.id.tv_new_record_time);
+        etNewRecordMIF = (EditText) view.findViewById(R.id.et_new_record_mif);
+        etNewRecordDesc = (EditText) view.findViewById(R.id.et_new_record_note);
 
         // get cards and display the name in the spinner
         sNewRecordCard = (Spinner) view.findViewById(R.id.s_new_record_card);
@@ -122,7 +134,7 @@ public class NewRecordDialogFragment extends DialogFragment implements View.OnCl
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //saveCard();
+                saveRecord();
             }
         });
 
@@ -159,6 +171,8 @@ public class NewRecordDialogFragment extends DialogFragment implements View.OnCl
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     tvNewRecordDate.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+                    finalMonth = (month + 1);
+                    finalYear = year;
                 }
             }, year, month, day);
 
@@ -190,7 +204,10 @@ public class NewRecordDialogFragment extends DialogFragment implements View.OnCl
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Spinner spinner = (Spinner) parent;
         if (spinner.getId() == R.id.s_new_record_currency) {
-            currency = parent.getItemAtPosition(position).toString();
+            currency = (Currency) parent.getItemAtPosition(position);
+        } else if (spinner.getId() == R.id.s_new_record_category) {
+            category = (Category) parent.getItemAtPosition(position);
+            Log.e("DFA","Category: " + category.getCategoryId());
         }
     }
 
@@ -209,20 +226,36 @@ public class NewRecordDialogFragment extends DialogFragment implements View.OnCl
         switch (position) {
             case 0:
                 tvNewRecordSign.setText("+");
+                recordType = 0;
                 break;
             case 1:
                 tvNewRecordSign.setText("-");
+                recordType = 1;
                 break;
             case 2:
                 tvNewRecordSign.setText("=");
+                recordType = 2;
                 break;
             default:
                 tvNewRecordSign.setText("-");
+                recordType = 1;
         }
     }
 
-    public boolean validateForm() {
-        //if ()
-        return true;
+    private void saveRecord() {
+        Period period = Period.getPeriodByCardId(getContext(), card.getCardId(), finalMonth, finalYear);
+        Log.e("DFA", "IDDDd: " + period.getPeriodId());
+        Record record = new Record(
+                recordType,
+                Double.parseDouble(etNewRecordAmount.getText().toString()),
+                category.getCategoryId(),
+                etNewRecordDesc.getText().toString(),
+                new Date(tvNewRecordDate.getText().toString()),
+                Integer.parseInt(etNewRecordMIF.getText().toString()),
+                currency.getCurrencyId(),
+                0,
+                card.getCardId(),
+                (period == null ? 0 : period.getPeriodId())
+        );
     }
 }
